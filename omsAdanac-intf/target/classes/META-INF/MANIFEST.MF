@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: allen
+Build-Jdk: 1.8.0_60
+Specification-Title: omsAdanac-intf
+Specification-Version: 1.0.0
+Implementation-Title: omsAdanac-intf
+Implementation-Version: 1.0.0
+Implementation-Vendor-Id: com.adanac.b2b
+Created-By: Maven Integration for Eclipse
+

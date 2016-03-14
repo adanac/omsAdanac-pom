@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap namespace="cart">
+
+	<!-- 将商品放入购物车 -->
+	<sql id="addCart">
+		<![CDATA[	
+		insert into oms_scms.CART
+		(
+		   USER_ID,
+		   MERCHANT_ID,
+		   SUPPLIER_ID,
+		   SUPPLIER_NAME,
+		   FSKUID,
+		   NUMBER,
+		   CREATE_TIME,
+		   UPDATE_TIME,
+		   LAST_OPERATOR
+		 )
+		 values
+		 (
+		 :userId,
+		 :merchantId,
+		 :supplierId,
+		 :supplierName,
+		 :fskuId,
+		 :number,
+		 now(),
+		 now(),
+		 :lastOperator
+		 )
+		]]>
+	</sql>
+
+	<!-- 修改商品详情 -->
+	<sql id="modifyCartNumber">
+		<![CDATA[		
+		update oms_scms.CART
+		set
+		    NUMBER = :number,
+		    UPDATE_TIME = now()
+		where
+		USER_ID=:userId
+		AND MERCHANT_ID=:merchantId
+		AND FSKUID=:fskuId
+		]]>
+	</sql>
+
+	<!-- 将商品移出购物车，如果fskuIds为空，则清空指定商户下员工的购物车 -->
+	<sql id="delCarts">
+		<![CDATA[
+		delete from oms_scms.CART
+		where 1=1
+		<#if userId?exists && userId!="">
+		AND USER_ID=:userId
+		</#if>
+		<#if merchantId?exists && merchantId!="">
+		AND MERCHANT_ID=:merchantId
+		</#if>
+		<#if fskuIds?exists && fskuIds!="">
+		AND FSKUID in(${fskuIds})
+		</#if>
+		]]>
+	</sql>
+
+	<!-- 查询多个商品 -->
+	<sql id="findCarts">
+		<![CDATA[
+		select * from oms_scms.CART
+		where 1=1
+		<#if userId?exists && userId!="">
+		AND USER_ID=:userId
+		</#if>
+		<#if merchantId?exists && merchantId!="">
+		AND MERCHANT_ID=:merchantId
+		</#if>
+		<#if supplierId?exists && supplierId!="">
+		AND SUPPLIER_ID=:supplierId
+		</#if>
+		<#if fskuIdsStr?exists && fskuIdsStr!="">
+		AND FSKUID in(${fskuIdsStr})
+		</#if>
+		<#if status?exists && status!="">
+		AND STATUS=:status
+		</#if>
+		ORDER BY SUPPLIER_ID
+		]]>
+	</sql> 
+	
+	<!-- 查询购物车商品数量 -->
+	<sql id="findCartsCount">
+		<![CDATA[
+		select count(1) from oms_scms.CART
+		where 1=1
+		<#if userId?exists && userId!="">
+		AND USER_ID=:userId
+		</#if>
+		<#if merchantId?exists && merchantId!="">
+		AND MERCHANT_ID=:merchantId
+		</#if>
+		]]>
+	</sql> 
+	
+</sqlMap>
