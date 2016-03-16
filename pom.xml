@@ -517,8 +517,8 @@
     <distributionManagement>
      </distributionManagement>
     <modules>
-    	<module>../omsAdanac-intf</module>
-    	<module>../omsAdanac-service</module>
-    	<module>../omsAdanac-web</module>
+    	<module>omsAdanac-intf</module>
+    	<module>omsAdanac-service</module>
+    	<module>omsAdanac-web</module>
     </modules>    
 </project>

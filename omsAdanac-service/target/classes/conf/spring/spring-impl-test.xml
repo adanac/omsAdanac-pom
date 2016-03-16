@@ -23,21 +23,22 @@
 		<property name="arguments">
 			<list>
 				<!--<value>log</value>-->
-				<value>classpath:conf/log/main_${envName}_logging.xml</value>
+				<value>classpath:conf/log/main_ADANAC_DEV_logging.xml</value>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="redisClient" class="com.adanac.framework.cache.redis.client.impl.MyShardedClient" >
-		<property name="configPath" value="redis" />
+	<!--  -->
+	<!-- <bean id="redisClient" class="com.adanac.framework.cache.redis.client.impl.MyShardedClient" > -->
+		<!-- <property name="configPath" value="redis" /> -->
 		<!-- 定义默认数据源-->
-		<property name="globalConfig" value="false" />
-	</bean>
+		<!-- <property name="globalConfig" value="false" /> -->
+	<!--</bean>-->
 
-	<bean id="redisBinaryClient" class="com.adanac.framework.cache.redis.client.impl.MyShardedBinaryClient" >
-		<property name="configPath" value="redis" />
+	<!--<bean id="redisBinaryClient" class="com.adanac.framework.cache.redis.client.impl.MyShardedBinaryClient" >-->
+		<!--<property name="configPath" value="redis" />-->
 		<!-- 定义默认数据源-->
-		<property name="globalConfig" value="false" />
-	</bean>
+		<!--<property name="globalConfig" value="false" />-->
+	<!--</bean>-->
 
 </beans>
