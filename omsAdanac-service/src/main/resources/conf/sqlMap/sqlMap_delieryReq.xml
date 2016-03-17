@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="order_delivery_require">
+	<sql id="createDeliveryReq">
+    	<![CDATA[
+    	    insert ORDER_DELIVERY_REQUIRE(
+    	    ID				   ,
+    	    SALE_ORDER_ID           ,
+			LGS_SEND_TIME      ,
+			LGS_RECEIVE_TIME   ,
+			LGS_TRANSPORT_MODE ,
+			LGS_NICKNAME       ,
+			LGS_PHONE          ,
+			LGS_ADDR           ,
+			LGS_EXTENT_TIME    ,
+			LGS_SEPCIAL        ,
+			CREATE_TIME        ,
+			UPDATE_TIME        ,
+			LAST_OPERATOR        
+			) VALUES(
+			:id				 ,
+			:orderId	     ,	       
+			:sendTime        ,
+			:receiveTime     ,
+			:transportMode   ,
+			:nickName        ,
+			:phone           ,
+			:lgsAddr         ,
+			:extentTime      ,
+			:sepcial         ,
+			:createTime      ,
+			:updateTime      ,
+			:lastOperator
+			)        
+		]]>
+    </sql>
+    
+    <sql id="updateDeliveryReq">
+    	<![CDATA[
+    	    UPDATE ORDER_DELIVERY_REQUIRE set
+    	    <#if sendTime?exists && sendTime!=null && sendTime!="">
+			LGS_SEND_TIME      = :sendTime,
+			</#if>
+			<#if receiveTime?exists && receiveTime!=null && receiveTime!="">
+			LGS_RECEIVE_TIME   = :receiveTime,
+			</#if>
+			<#if transportMode?exists && transportMode!=null && transportMode!="">
+			LGS_TRANSPORT_MODE = :transportMode,
+			</#if>
+			<#if nickName?exists && nickName!=null && nickName!="">
+			LGS_NICKNAME       = :nickName,
+			</#if>
+			<#if phone?exists && phone!=null && phone!="">
+			LGS_PHONE          = :phone,
+			</#if>
+			<#if lgsAddr?exists && lgsAddr!=null && lgsAddr!="">
+			LGS_ADDR           = :lgsAddr,
+			</#if>
+			<#if extentTime?exists && extentTime!=null && extentTime!="">
+			LGS_EXTENT_TIME    = :extentTime,
+			</#if>
+			<#if sepcial?exists && sepcial!=null && sepcial!="">
+			LGS_SEPCIAL        = :sepcial,
+			</#if>
+			<#if updateTime?exists && updateTime!=null && updateTime!="">
+			UPDATE_TIME        = :updateTime,
+			</#if>
+			<#if lastOperator?exists && lastOperator!=null && lastOperator!="">
+			LAST_OPERATOR      = :lastOperator
+			</#if>
+			where SALE_ORDER_ID = :orderId
+		]]>
+    </sql>
+	
+	<sql id="findByOrderId">
+    	<![CDATA[
+    	    select
+    	    SALE_ORDER_ID      as orderId,
+			LGS_SEND_TIME      as sendTime,
+			LGS_RECEIVE_TIME   as receiveTime,
+			LGS_TRANSPORT_MODE as transportMode,
+			LGS_NICKNAME       as nickName,
+			LGS_PHONE          as phone,
+			LGS_ADDR           as lgsAddr,
+			LGS_EXTENT_TIME    as extentTime,
+			LGS_SEPCIAL        as sepcial,
+			CREATE_TIME        as createTime,
+			UPDATE_TIME        as updateTime,
+			LAST_OPERATOR      as lastOperator
+			from ORDER_DELIVERY_REQUIRE
+			where 1=1 AND
+			SALE_ORDER_ID = :orderIid
+		]]>
+    </sql>
+    
+</sqlMap>

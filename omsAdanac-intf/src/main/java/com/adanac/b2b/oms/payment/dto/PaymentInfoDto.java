@@ -32,7 +32,7 @@ public class PaymentInfoDto extends BaseDto {
 	/**
 	 * 物理主键
 	 */
-	private Long payerId;
+	private String payerId;
 	/**
 	 * 支付方类型,宝宝店,供应商,平台
 	 */
@@ -84,7 +84,7 @@ public class PaymentInfoDto extends BaseDto {
 	/**
 	 * 最后更新人
 	 */
-	private Long lastOperator;
+	private String lastOperator;
 
 	public String getId() {
 		return id;
@@ -126,11 +126,11 @@ public class PaymentInfoDto extends BaseDto {
 		this.orderType = orderType;
 	}
 
-	public Long getPayerId() {
+	public String getPayerId() {
 		return payerId;
 	}
 
-	public void setPayerId(Long payerId) {
+	public void setPayerId(String payerId) {
 		this.payerId = payerId;
 	}
 
@@ -230,11 +230,11 @@ public class PaymentInfoDto extends BaseDto {
 		this.updateTime = updateTime;
 	}
 
-	public Long getLastOperator() {
+	public String getLastOperator() {
 		return lastOperator;
 	}
 
-	public void setLastOperator(Long lastOperator) {
+	public void setLastOperator(String lastOperator) {
 		this.lastOperator = lastOperator;
 	}
 }

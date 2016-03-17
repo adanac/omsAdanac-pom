@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="orders">
+    <sql id="createOrder">
+    	<![CDATA[
+    	    insert oms_oms.SALE_ORDER(
+    	    SALE_ORDER_CODE    ,
+    	    SALE_ORDER_ID      ,
+    	    MAIN_ORDER_ID      ,
+			USER_ID            ,
+			MERCHANT_ID        ,
+			SUPPLIER_ID        ,
+			SUPPLIER_NAME      ,
+			TOTAL_MONEY        ,
+			FREIGHT_MONEY      ,
+			PRODUCT_MONEY      ,
+			MANUAL_DISCOUNT    ,
+			AUTO_DISCOUNT      ,
+			CATEGORY           ,
+			STATUS             ,
+			CHANNEL            ,
+			CREATE_USER        ,
+			CREATE_TIME        ,
+			UPDATE_TIME        ,
+			LAST_OPERATOR      ,
+			CLOSE_TYPE         ,
+			CLOSE_REASON       ,
+			CLOSE_TIME         ,
+			IS_RECEIPT         ,
+			PRE_ARRIVE_TIME    ,
+			REMARK
+			) SELECT
+			CONCAT(:orderCode,LPAD(IF(count(1)<1, 0,MAX(SUBSTRING(SALE_ORDER_CODE, 15, 20))+1), 6, 0)),
+			:orderId          ,
+			:morderId         ,
+			:userId           ,
+			:merchantId       ,
+			:supplierId       ,
+			:supplierName     ,
+			:totalMoney       ,
+			:freightMoney     ,
+			:productMoney     ,
+			:manualDiscount   ,
+			:autoDiscount     ,
+			:category         ,
+			:status           ,
+			:channel          ,
+			:createUser       ,
+			:createTime       ,
+			:updateTime       ,
+			:lastOperator     ,
+			:closeType        ,
+			:closeReason      ,
+			:closeTime        ,
+			:isReceipt        ,
+			:preArriveTime    ,
+			:remark
+			from oms_oms.SALE_ORDER 
+			where SUBSTRING(SALE_ORDER_CODE, 1, 14) = :orderCode
+		]]>
+    </sql>
+    
+    <sql id="listOrders">
+    	<![CDATA[
+    	    SELECT 
+    	    SALE_ORDER_CODE          as orderCode         ,
+    	    SALE_ORDER_ID            as orderId           ,
+    	    MAIN_ORDER_ID           as morderId          ,
+			USER_ID             as userId            ,
+			MERCHANT_ID         as merchantId        ,
+			SUPPLIER_ID         as supplierId        ,
+			SUPPLIER_NAME       as supplierName      ,
+			TOTAL_MONEY         as totalMoney        ,
+			FREIGHT_MONEY       as freightMoney      ,
+			PRODUCT_MONEY       as productMoney      ,
+			MANUAL_DISCOUNT     as manualDiscount    ,
+			AUTO_DISCOUNT       as autoDiscount      ,
+			CATEGORY            as category          ,
+			STATUS              as status            ,
+			CHANNEL             as channel           ,
+			CREATE_USER         as createUser        ,
+			CREATE_TIME         as createTime        ,
+			UPDATE_TIME         as updateTime        ,
+			LAST_OPERATOR       as lastOperator      ,
+			CLOSE_TYPE          as closeType         ,
+			CLOSE_REASON        as closeReason       ,
+			CLOSE_TIME          as closeTime         ,
+			IS_RECEIPT          as isReceipt         ,
+			PRE_ARRIVE_TIME     as preArriveTime     ,
+			DELIVERY_TIME       as deliveryTime      ,
+			REMARK              as remark
+			FROM oms_oms.SALE_ORDER
+			WHERE 1=1 
+			<#if orderCode?exists && orderCode!=null && orderCode!="">
+				AND SALE_ORDER_CODE = :orderCode
+    		</#if>
+    		<#if orderId?exists && orderId!=null && orderId!="">
+				AND SALE_ORDER_ID = :orderId
+    		</#if>
+    		<#if morderId?exists && morderId!=null && morderId!="">
+				AND MAIN_ORDER_ID = :morderId
+    		</#if>
+		]]>
+    </sql>
+    
+    <!-- 取消订单,订单状态必须为待支付状态(0) -->
+    <sql id="cancleByOrderId">
+    	<![CDATA[
+    	    UPDATE  oms_oms.SALE_ORDER SET
+			STATUS        = :status       ,
+			LAST_OPERATOR = :lastOperator ,
+			UPDATE_TIME   = :updateTime
+			WHERE SALE_ORDER_ID = :orderId AND STATUS = 0 AND STATUS <> :status
+		]]>
+    </sql>
+    <!-- 取消订单,订单状态必须为待支付状态(0) -->
+    <sql id="cancleByOrderCode">
+    	<![CDATA[
+    	    UPDATE  oms_oms.SALE_ORDER SET
+			STATUS        = :status       ,
+			LAST_OPERATOR = :lastOperator ,
+			UPDATE_TIME   = :updateTime
+			WHERE SALE_ORDER_CODE = :orderCode AND STATUS = 0 AND STATUS <> :status
+		]]>
+    </sql>
+    <!-- 用户收货确认,只有在订单处理物流已送达状态下(3), 才可以修改 -->
+    <sql id="receiveByOrderId">
+    	<![CDATA[
+    	    UPDATE  oms_oms.SALE_ORDER SET
+			STATUS        = :status       ,
+			LAST_OPERATOR = :lastOperator ,
+			UPDATE_TIME   = :updateTime
+			WHERE SALE_ORDER_ID = :orderId AND STATUS <> :status
+		]]>
+    </sql>
+    <!-- 支付订单,只有款支付状态(0)的订单才可以支付 -->
+    <sql id="payByOrderId">
+    	<![CDATA[
+    	    UPDATE  oms_oms.SALE_ORDER SET
+			STATUS        = :status       ,
+			LAST_OPERATOR = :lastOperator ,
+			UPDATE_TIME   = :updateTime
+			WHERE SALE_ORDER_ID = :orderId AND STATUS = 0 AND STATUS <> :status
+		]]>
+    </sql>
+    
+    <!-- 发货订单,只有状态(1)的订单才可以发货 -->
+    <sql id="deliveryByOrderId">
+    	<![CDATA[
+    	    UPDATE  oms_oms.SALE_ORDER SET
+			STATUS        = :status      ,
+			DELIVERY_TIME = :deliveryTime,
+			LAST_OPERATOR = :lastOperator,
+			UPDATE_TIME   = :updateTime
+			WHERE SALE_ORDER_ID = :orderId AND STATUS = 1 AND STATUS <> :status
+		]]>
+    </sql>
+    
+	<!-- 将订单状态修改为指定状态 -->    
+    <sql id="chgOrderStatusById">
+    	<![CDATA[
+    	    UPDATE  oms_oms.SALE_ORDER SET
+			STATUS        = :status       ,
+			LAST_OPERATOR = :lastOperator 
+			WHERE SALE_ORDER_ID = :orderId
+		]]>
+    </sql>
+    
+    
+    <!-- 更新订单的评价状态 -->    
+    <sql id="updateEvaluateStatus">
+    	<![CDATA[
+    	    UPDATE  oms_oms.SALE_ORDER SET
+				EVALUATED        = (select IF(count(1)>0,0,1) te from oms_oms.sale_order_item 
+									where oms_oms.sale_order_item.EVALUATED=0 and oms_oms.sale_order_item.SALE_ORDER_ID=:orderId)
+			WHERE oms_oms.SALE_ORDER.SALE_ORDER_ID = :orderId
+		]]>
+    </sql>
+    
+    <sql id="listOrderComp">
+    	<![CDATA[
+    		SELECT DISTINCT
+    		aTmp.PAY_TIME            as payTime           ,
+    		aTmp.PRODUCT_NUMBER      as productNumber     ,
+		    aTmp.SALE_ORDER_CODE          as orderCode    , 
+		    aTmp.SALE_ORDER_ID            as orderId      , 
+		    aTmp.MAIN_ORDER_ID           as morderId      ,
+		    aTmp.USER_ID             as userId            , 
+		    aTmp.MERCHANT_ID         as merchantId        , 
+		    aTmp.SUPPLIER_ID         as supplierId        , 
+		    aTmp.SUPPLIER_NAME       as supplierName      , 
+		    aTmp.TOTAL_MONEY         as totalMoney        , 
+		    aTmp.FREIGHT_MONEY       as freightMoney      , 
+		    aTmp.PRODUCT_MONEY       as productMoney      , 
+		    aTmp.MANUAL_DISCOUNT     as manualDiscount    , 
+		    aTmp.AUTO_DISCOUNT       as autoDiscount      , 
+		    aTmp.CATEGORY            as category          , 
+		    aTmp.STATUS              as status            , 
+		    IFNULL(aa2.TYPE, 0)      as aftersaleStatus   , 
+		    aTmp.CHANNEL             as channel           , 
+		    aTmp.CREATE_USER         as createUser        , 
+		    aTmp.CREATE_TIME         as createTime        , 
+		    aTmp.UPDATE_TIME         as updateTime        , 
+		    aTmp.LAST_OPERATOR       as lastOperator      , 
+		    aTmp.CLOSE_TYPE          as closeType         , 
+		    aTmp.CLOSE_REASON        as closeReason       , 
+		    aTmp.CLOSE_TIME          as closeTime         , 
+		    aTmp.IS_RECEIPT          as isReceipt         , 
+		    aTmp.PRE_ARRIVE_TIME     as preArriveTime     ,
+		    aTmp.DELIVERY_TIME       as deliveryTime      , 
+		    aTmp.REMARK              as remark            ,
+		    IFNULL(pay.PAY_BANK, 0)  as payBank           ,
+		    aTmp.MAIN_ORDER_CODE     as morderCode
+    		FROM(
+    		SELECT DISTINCT
+    		tmp.PAY_TIME            ,
+    		tmp.MAIN_ORDER_CODE     ,
+    		tmp.PRODUCT_NUMBER      ,
+		    tmp.SALE_ORDER_CODE     , 
+		    tmp.SALE_ORDER_ID       , 
+		    tmp.MAIN_ORDER_ID       ,
+		    tmp.USER_ID             , 
+		    tmp.MERCHANT_ID         , 
+		    tmp.SUPPLIER_ID         , 
+		    tmp.SUPPLIER_NAME       , 
+		    tmp.TOTAL_MONEY         , 
+		    tmp.FREIGHT_MONEY       , 
+		    tmp.PRODUCT_MONEY       , 
+		    tmp.MANUAL_DISCOUNT     , 
+		    tmp.AUTO_DISCOUNT       , 
+		    tmp.CATEGORY            , 
+		    tmp.STATUS              , 
+		    tmp.CHANNEL             , 
+		    tmp.CREATE_USER         , 
+		    tmp.CREATE_TIME         , 
+		    tmp.UPDATE_TIME         , 
+		    tmp.LAST_OPERATOR       , 
+		    tmp.CLOSE_TYPE          , 
+		    tmp.CLOSE_REASON        , 
+		    tmp.CLOSE_TIME          , 
+		    tmp.IS_RECEIPT          , 
+		    tmp.PRE_ARRIVE_TIME     ,
+		    tmp.DELIVERY_TIME       ,
+		    tmp.REMARK              
+		    FROM(
+    		SELECT 
+    		mso.PAY_TIME           ,
+    		mso.MAIN_ORDER_CODE    ,
+    		(SELECT SUM(NUMBER) FROM `sale_order_item`
+			WHERE SALE_ORDER_ID = so.SALE_ORDER_ID) as PRODUCT_NUMBER,
+		    so.SALE_ORDER_CODE         ,
+		    so.SALE_ORDER_ID           ,
+		    so.MAIN_ORDER_ID          ,
+		    so.USER_ID            ,
+		    so.MERCHANT_ID        ,
+		    so.SUPPLIER_ID        ,
+		    so.SUPPLIER_NAME      ,
+		    so.TOTAL_MONEY        ,
+		    so.FREIGHT_MONEY      ,
+		    so.PRODUCT_MONEY      ,
+		    so.MANUAL_DISCOUNT    ,
+		    so.AUTO_DISCOUNT      ,
+		    so.CATEGORY           ,
+		    so.STATUS             ,
+		    so.CHANNEL            ,
+		    so.CREATE_USER        ,
+		    so.CREATE_TIME        ,
+		    so.UPDATE_TIME        ,
+		    so.LAST_OPERATOR      ,
+		    so.CLOSE_TYPE         ,
+		    so.CLOSE_REASON       ,
+		    so.CLOSE_TIME         ,
+		    so.IS_RECEIPT         ,
+		    so.PRE_ARRIVE_TIME    ,
+		    so.DELIVERY_TIME      ,
+		    so.REMARK             		    
+			FROM oms_oms.sale_order so
+			<#if productName?exists && productName!=null && productName!="">
+				, SALE_ORDER_ITEM oi
+			</#if>
+			, main_order mso
+			where 1=1
+				AND so.MAIN_ORDER_ID = mso.MAIN_ORDER_ID
+			<#if payStartTime?exists && payStartTime!=null && payStartTime!="">
+				AND mso.PAY_TIME >= :payStartTime
+			</#if> 
+			<#if payEndTime?exists && payEndTime!=null && payEndTime!="">
+				AND mso.PAY_TIME <= :payEndTime
+			</#if> 
+			<#if productName?exists && productName!=null && productName!="">
+				AND so.SALE_ORDER_ID = oi.SALE_ORDER_ID
+    			AND oi.PRODUCT_NAME like :productName
+    		</#if>
+    		<#if morderId?exists && morderId!=null && morderId!="">
+    			AND so.MAIN_ORDER_ID = :morderId
+    		</#if>
+			<#if morderCode?exists && morderCode!=null && morderCode!="">
+    			AND mso.MAIN_ORDER_CODE = :morderCode
+    		</#if>
+    		<#if orderCode?exists && orderCode!=null && orderCode!="">
+    			AND so.SALE_ORDER_CODE = :orderCode
+    		</#if>
+    		<#if evaluated?exists && evaluated!=null && evaluated!="">
+    			AND so.EVALUATED = :evaluated
+    		</#if>
+			<#if orderId?exists && orderId!=null && orderId!="">
+    			AND so.SALE_ORDER_ID = :orderId
+    		</#if>
+    		<#if userId?exists && userId!=null && userId!="">
+    			AND so.USER_ID = :userId
+    		</#if>
+    		<#if merchantId?exists && merchantId!=null && merchantId!="">
+    			AND so.MERCHANT_ID = :merchantId
+    		</#if>
+    		<#if supplierId?exists && supplierId!=null && supplierId!="">
+    			AND so.SUPPLIER_ID = :supplierId
+    		</#if>
+    		<#if category?exists && category!=null && category!="">
+    			AND so.CATEGORY = :category
+    		</#if>
+    		<#if status?exists && status!=null && status!="">
+    			AND ${status}
+    		</#if>
+    		<#if channel?exists && channel!=null && channel!="">
+    			AND so.CHANNEL = :channel
+    		</#if>
+    		<#if closeType?exists && closeType!=null && closeType!="">
+    			AND so.CLOSE_TYPE = :closeType
+    		</#if>
+    		<#if isReceipt?exists && isReceipt!=null && isReceipt!="">
+    			AND so.IS_RECEIPT = :isReceipt
+    		</#if>
+    		<#if startCloseTime?exists && startCloseTime!=null && startCloseTime!="">
+    			AND so.CLOSE_TIME >= :startCloseTime
+    		</#if>
+    		<#if endCloseTime?exists && endCloseTime!=null && endCloseTime!="">
+    			AND so.CLOSE_TIME <= :endCloseTime
+    		</#if>
+    		<#if startTime?exists && startTime!=null && startTime!="">
+    			AND so.CREATE_TIME >= :startTime
+    		</#if>
+    		<#if endTime?exists && endTime!=null && endTime!="">
+    			AND so.CREATE_TIME <= :endTime
+    		</#if>
+    		<#if deliveryStartTime?exists && deliveryStartTime!=null && deliveryStartTime!="">
+    			AND so.DELIVERY_TIME >= :deliveryStartTime
+    		</#if>
+    		<#if deliveryEndTime?exists && deliveryEndTime!=null && deliveryEndTime!="">
+    			AND so.DELIVERY_TIME <= :deliveryEndTime
+    		</#if>
+    		)tmp left JOIN aftersale_apply aa ON tmp.SALE_ORDER_ID = aa.SALE_ORDER_ID
+    		WHERE 1=1 
+    		<#if asStatus?exists && asStatus!=null && asStatus!=''>
+		    	AND aa.STATUS = :asStatus
+		    </#if>
+		    <#if asStatusNot?exists && asStatusNot!=null && asStatusNot!=''>
+		    	AND aa.STATUS <> :asStatusNot
+		    </#if>
+			<#if asStatusNull?exists && asStatusNull!=null && asStatusNull=='0'>
+		    	AND aa.STATUS IS NOT NULL
+			</#if>
+		    <#if asStatusNull?exists && asStatusNull!=null && asStatusNull=='1'>
+		    	AND aa.STATUS IS NULL
+		    </#if>
+		    <#if asType?exists && asType!=null && asType!="">
+		    	AND aa.TYPE = :asType
+		    </#if>
+    		)aTmp LEFT JOIN aftersale_apply aa2 ON aTmp.SALE_ORDER_ID = aa2.SALE_ORDER_ID 
+    		AND (aa2.`STATUS`=1 OR aa2.`STATUS` = 0) and (aa2.TYPE=2 or aa2.TYPE = 3)
+    		left join oms_pms.pay pay on aTmp.MAIN_ORDER_ID = pay.ORDER_ID
+    		where 1=1 
+    		 <#if payBank?exists && payBank!=null && payBank!="">
+		    	AND pay.PAY_BANK = :payBank
+		    </#if>
+    	]]>
+    </sql>
+    
+    <sql id="sumOrdersByUserId">
+    	<![CDATA[
+		    
+		    SELECT 
+		    so.USER_ID as userId,
+		    IF(aa.TYPE=2,20,so.status) as orderStatus, 
+		    count(1) as orders, 
+		    aa.TYPE as aaType ,
+		    aa.STATUS as aaStatus
+		    FROM oms_oms.sale_order so LEFT JOIN oms_oms.aftersale_apply aa 
+		    ON so.SALE_ORDER_ID=aa.SALE_ORDER_ID 
+		    AND aa.TYPE=2 
+		    AND (aa.`STATUS`=1 OR aa.`STATUS`=0) 
+		    WHERE so.USER_ID=:userId
+		    GROUP BY so.USER_ID, so.STATUS, aa.TYPE, aa.STATUS
+       ]]>
+    </sql>
+    
+    <sql id="sumEvaluatedUserOrders">
+    	<![CDATA[
+		    SELECT 
+		    count(1) as orders
+		    FROM oms_oms.sale_order so
+		    WHERE so.USER_ID=:userId AND so.EVALUATED=0
+		    GROUP BY so.USER_ID
+       ]]>
+    </sql>
+    
+</sqlMap>

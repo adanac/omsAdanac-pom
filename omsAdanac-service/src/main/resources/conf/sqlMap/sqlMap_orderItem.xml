@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="order_item">
+	<sql id="createOrderItem">
+    	<![CDATA[
+    	    insert SALE_ORDER_ITEM(
+    	    ORDER_ITEM_CODE      ,
+    	    ORDER_ITEM_ID        ,
+			SALE_ORDER_ID       ,
+			FSKUID         ,
+			PRODUCT_NAME   ,
+			NUMBER         ,
+			REFER_PRICE    ,
+			REAL_PRICE     ,
+			SALE_AMOUNT    ,
+			AUTO_DISCOUNT  ,
+			MANUAL_DISCOUNT,
+			SALE_TAX       ,
+			TAX_RATE       ,
+			FSKUSNAPVERSION,
+			EVALUATED      ,
+			COMMENT        ,
+			PRODUCT_TYPE   ,
+			REFUND_COUNT   ,
+			REFUND_AMOUNT  ,
+			CREATE_TIME    ,
+			UPDATE_TIME    ,
+			LAST_OPERATOR
+			) SELECT 
+			CONCAT(so.SALE_ORDER_CODE,:itemCode)    ,  
+			:itemId           ,
+			:orderId          ,
+			:fskuId           ,
+			:productName      ,
+			:number           ,
+			:referPrice       ,
+			:realPrice        ,
+			:saleAmount       ,
+			:autoDiscount     ,
+			:manualDiscount   ,
+			:saleTax          ,
+			:taxRate          ,
+			:fskuSnapVersion  ,
+			:evaluated        ,
+			:leaveMessage     ,
+			:productType      ,
+			:refundCount      ,
+			:refundAmount     ,
+			:createTime       ,
+			:updateTime       ,
+			:lastOperator
+			FROM  SALE_ORDER so WHERE so.SALE_ORDER_ID = :orderId 
+		]]>
+    </sql>
+    
+    <sql id="findByItemId">
+    	<![CDATA[
+    	    select
+    	    ORDER_ITEM_CODE       as itemCode         ,
+    	    ORDER_ITEM_ID         as itemId           , 
+			SALE_ORDER_ID        as orderId          , 
+			FSKUID          as fskuId           , 
+			NUMBER          as number           , 
+			REFER_PRICE     as referPrice       , 
+			PRODUCT_NAME    as productName      ,
+			REAL_PRICE      as realPrice        , 
+			SALE_AMOUNT     as saleAmount       , 
+			AUTO_DISCOUNT   as autoDiscount     , 
+			MANUAL_DISCOUNT as manualDiscount   , 
+			SALE_TAX        as saleTax          , 
+			TAX_RATE        as taxRate          , 
+			FSKUSNAPVERSION as fskuSnapVersion  , 
+			EVALUATED       as evaluated        , 
+			COMMENT         as leaveMessage     , 
+			PRODUCT_TYPE    as productType      , 
+			REFUND_COUNT    as refundCount      , 
+			REFUND_AMOUNT   as refundAmount     ,
+			CREATE_TIME     as createTime       ,
+			UPDATE_TIME     as updateTime       ,
+			LAST_OPERATOR   as lastOperator
+			from SALE_ORDER_ITEM
+			where ORDER_ITEM_ID = :itemId
+		]]>
+    </sql>
+    
+    <sql id="listByOrderId">
+    	<![CDATA[
+    		select
+    	    oi.ORDER_ITEM_CODE       as itemCode         ,
+    	    oi.ORDER_ITEM_ID         as itemId           , 
+			oi.SALE_ORDER_ID        as orderId          , 
+			oi.FSKUID          as fskuId           , 
+			oi.NUMBER          as number           , 
+			oi.REFER_PRICE     as referPrice       , 
+			oi.REAL_PRICE      as realPrice        , 
+			oi.SALE_AMOUNT     as saleAmount       , 
+			oi.AUTO_DISCOUNT   as autoDiscount     , 
+			oi.MANUAL_DISCOUNT as manualDiscount   , 
+			oi.SALE_TAX        as saleTax          , 
+			oi.TAX_RATE        as taxRate          , 
+			oi.FSKUSNAPVERSION as fskuSnapVersion  , 
+			oi.EVALUATED       as evaluated        , 
+			oi.COMMENT         as leaveMessage     , 
+			oi.PRODUCT_TYPE    as productType      , 
+			oi.REFUND_COUNT    as refundCount      , 
+			oi.REFUND_AMOUNT   as refundAmount     ,
+			oi.PRODUCT_NAME    as productName      ,
+			oi.CREATE_TIME     as createTime       ,
+			oi.UPDATE_TIME     as updateTime       ,
+			oi.LAST_OPERATOR   as lastOperator     ,
+			IFNULL(tmp.`STATUS`,1)       as asStatus
+			from SALE_ORDER_ITEM  oi LEFT JOIN (select 
+			aa.AFTERSALE_APPLY_CODE,
+			aa.AFTERSALE_APPLY_ID,
+			aa.SALE_ORDER_ID,
+			aa.USER_ID,
+			aa.SUPPLIER_ID,
+			aa.TYPE,
+			aa.REASON_TYPE,
+			aa.REASON,
+			aa.PRICE,
+			aa.STATUS,
+			aa.CLOSE_TIME,
+			aa.CREATE_TIME,
+			aa.LGS_COMPANY_NAME,
+			aa.WAYBILL_CODE,
+			aad.ID,
+			aad.ITEM_ID,
+			aad.FSKUID,
+			aad.NUMBER,
+			aad.AMOUNT
+			from aftersale_apply aa, aftersale_apply_detail aad where aa.AFTERSALE_APPLY_ID=aad.APPLY_ID) tmp 
+			ON oi.FSKUID= tmp.FSKUID and oi.SALE_ORDER_ID=tmp.SALE_ORDER_ID AND tmp.STATUS = 0
+			WHERE oi.SALE_ORDER_ID = :orderId
+    		]]>
+    </sql>
+    
+    <sql id="evaluateById">
+    	<![CDATA[
+    	    UPDATE SALE_ORDER_ITEM SET
+			EVALUATED       = :evaluated        ,			
+			UPDATE_TIME     = :updateTime       ,
+			LAST_OPERATOR   = :lastOperator
+			where ORDER_ITEM_ID = :itemId
+		]]>
+    </sql>
+    
+    <sql id="modifyAfterSaleData">
+    	<![CDATA[
+    	    UPDATE SALE_ORDER_ITEM SET
+			REFUND_COUNT    = :number        ,
+			REFUND_AMOUNT   = :amount        ,		
+			UPDATE_TIME     = :updateTime    ,
+			LAST_OPERATOR   = :lastOperator
+			where ORDER_ITEM_ID = :itemId
+		]]>
+    </sql>
+    
+</sqlMap>

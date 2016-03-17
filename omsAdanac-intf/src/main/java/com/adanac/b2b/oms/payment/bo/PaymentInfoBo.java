@@ -36,7 +36,7 @@ public class PaymentInfoBo implements Serializable {
 	/**
 	 * 物理主键
 	 */
-	private Long payerId;
+	private String payerId;
 	/**
 	 * 支付方类型,宝宝店,供应商,平台
 	 */
@@ -80,7 +80,7 @@ public class PaymentInfoBo implements Serializable {
 	/**
 	 * 最后更新人
 	 */
-	private Long lastOperator;
+	private String lastOperator;
 
 	public String getOrderId() {
 		return orderId;
@@ -122,11 +122,11 @@ public class PaymentInfoBo implements Serializable {
 		this.payCode = payCode;
 	}
 
-	public Long getPayerId() {
+	public String getPayerId() {
 		return payerId;
 	}
 
-	public void setPayerId(Long payerId) {
+	public void setPayerId(String payerId) {
 		this.payerId = payerId;
 	}
 
@@ -210,11 +210,11 @@ public class PaymentInfoBo implements Serializable {
 		this.inAccount = inAccount;
 	}
 
-	public Long getLastOperator() {
+	public String getLastOperator() {
 		return lastOperator;
 	}
 
-	public void setLastOperator(Long lastOperator) {
+	public void setLastOperator(String lastOperator) {
 		this.lastOperator = lastOperator;
 	}
 

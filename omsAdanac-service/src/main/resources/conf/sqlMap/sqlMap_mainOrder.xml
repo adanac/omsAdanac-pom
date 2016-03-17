@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap namespace="mainOrder">
+
+	<sql id="create">
+    	<![CDATA[
+				INSERT INTO oms_oms.main_order(
+					MAIN_ORDER_CODE  ,
+					MAIN_ORDER_ID    ,
+					CHANNEL          ,
+					TOTAL_MONEY      ,
+					STATUS           ,
+					PAY_MONEY        ,
+					CREATE_USER      ,
+					CANCEL_USER      ,
+					CANCEL_TIME      ,
+					PAY_USER         ,
+					USER_ID          ,
+					MERCHANT_ID      ,
+					PAY_TIME         ,
+					CLOSE_TYPE       ,
+					CLOSE_REASON     ,
+					CLOSE_TIME       
+				)SELECT
+					CONCAT(date_format(now(),'%y%m%d'),LPAD((IF(count(1)<1, 0, MAX(SUBSTRING(MAIN_ORDER_CODE, 7, 20))+1)), 14, 0)),
+					:morderId        ,
+					:channel         ,
+					:totalMoney      ,
+					:status          ,
+					:payMoney        ,
+					:createUser      ,
+					:cancelUser      ,
+					:cancelTime      ,
+					:payUser         ,
+					:userId          ,
+					:merchantId      ,
+					:payTime         ,
+					:closeType       ,
+					:closeReason     ,
+					:closeTime       
+				FROM oms_oms.main_order
+				WHERE SUBSTRING(MAIN_ORDER_CODE, 1, 6) = date_format(now(),'%y%m%d')
+		 ]]>
+	</sql>
+
+	<sql id="modifyById">
+    	<![CDATA[
+				UPDATE oms_oms.main_order SET  
+				<#if morderCode?exists && morderCode!=null && morderCode!=""> 
+					MAIN_ORDER_CODE  	= :morderCode      ,
+				</#if>
+				<#if channel?exists && channel!=null && channel!=""> 
+					CHANNEL          	= :channel         ,
+				</#if>
+				<#if totalMoney?exists && totalMoney!=null && totalMoney!=""> 
+					TOTAL_MONEY      	= :totalMoney      ,
+				</#if>
+				<#if userId?exists && userId!=null && userId!=""> 
+					USER_ID           	= :userId      ,
+				</#if>
+				<#if merchantId?exists && merchantId!=null && merchantId!=""> 
+					MERCHANT_ID      	= :merchantId      ,
+				</#if>
+				<#if status?exists && status!=null && status!=""> 
+					STATUS           	= :status          ,
+				</#if>
+				<#if payMoney?exists && payMoney!=null && payMoney!=""> 
+					PAY_MONEY        	= :payMoney        ,
+				</#if>
+				<#if createUser?exists && createUser!=null && createUser!=""> 
+					CREATE_USER      	= :createUser      ,
+				</#if>
+				<#if cancelUser?exists && cancelUser!=null && cancelUser!=""> 
+					CANCEL_USER      	= :cancelUser      ,
+				</#if>
+				<#if cancelTime?exists && cancelTime!=null && cancelTime!=""> 
+					CANCEL_TIME      	= :cancelTime      ,
+				</#if>
+				<#if payUser?exists && payUser!=null && payUser!=""> 
+					PAY_USER         	= :payUser         ,
+				</#if>
+				<#if payTime?exists && payTime!=null && payTime!=""> 
+					PAY_TIME         	= :payTime         ,
+				</#if>
+				<#if closeType?exists && closeType!=null && closeType!=""> 
+					CLOSE_TYPE       	= :closeType       ,
+				</#if>
+				<#if closeReason?exists && closeReason!=null && closeReason!=""> 
+					CLOSE_REASON     	= :closeReason     ,
+				</#if>
+				<#if closeTime?exists && closeTime!=null && closeTime!=""> 
+					CLOSE_TIME          = :closeTime       ,
+				</#if>
+					MAIN_ORDER_ID     = :morderId
+				WHERE MAIN_ORDER_ID     = :morderId 
+		]]>
+	</sql>
+	
+	<sql id="query">
+    	<![CDATA[
+				SELECT
+					mo.MAIN_ORDER_ID   as morderId        ,
+					mo.MAIN_ORDER_CODE as morderCode      ,
+					mo.CHANNEL         as channel         ,
+					mo.TOTAL_MONEY     as totalMoney      ,
+					mo.STATUS          as status          ,
+					mo.PAY_MONEY       as payMoney        ,
+					mo.CREATE_USER     as createUser      ,
+					mo.CANCEL_USER     as cancelUser      ,
+					mo.CANCEL_TIME     as cancelTime      ,
+					mo.PAY_USER        as payUser         ,
+					mo.USER_ID         as userId          ,
+					mo.MERCHANT_ID     as merchantId      ,
+					mo.PAY_TIME        as payTime         ,
+					mo.CLOSE_TYPE      as closeType       ,
+					mo.CLOSE_REASON    as closeReason     ,
+					mo.CLOSE_TIME      as closeTime       ,
+					mo.UPDATE_TIME     as updateTime      ,
+					mo.CREATE_TIME     as createTime     
+				FROM  oms_oms.main_order as mo 
+				WHERE 1=1
+				<#if morderId?exists && morderId!=null && morderId!="">
+					AND mo.MAIN_ORDER_ID   = :morderId 
+				</#if>
+				<#if morderCode?exists && morderCode!=null && morderCode!="">       
+					AND mo.MAIN_ORDER_CODE = :morderCode 
+				</#if>
+				<#if channel?exists && channel!=null && channel!="">     
+					AND mo.CHANNEL         = :channel         
+				</#if>
+				<#if totalMoney?exists && totalMoney!=null && totalMoney!="">
+					AND mo.TOTAL_MONEY     = :totalMoney      
+				</#if>
+				<#if status?exists && status!=null && status!="">
+					AND mo.STATUS          = :status          
+				</#if>
+				<#if userId?exists && userId!=null && userId!="">
+					AND mo.USER_ID          = :userId          
+				</#if>
+				<#if merchantId?exists && merchantId!=null && merchantId!="">
+					AND mo.MERCHANT_ID          = :merchantId          
+				</#if>
+				<#if payMoney?exists && payMoney!=null && payMoney!="">
+					AND mo.PAY_MONEY       = :payMoney        
+				</#if>
+				<#if createUser?exists && createUser!=null && createUser!="">
+					AND mo.CREATE_USER     = :createUser   
+				</#if>
+				<#if cancelUser?exists && cancelUser!=null && cancelUser!="">   
+					AND mo.CANCEL_USER     = :cancelUser      
+				</#if>
+				<#if cancelStartTime?exists && cancelStartTime!=null && cancelStartTime!="">
+					AND mo.CANCEL_TIME     >= :cancelStartTime      
+				</#if>
+				<#if cancelEndTime?exists && cancelEndTime!=null && cancelEndTime!="">
+					AND mo.CANCEL_TIME     <= :cancelEndTime      
+				</#if>
+				<#if payUser?exists && payUser!=null && payUser!="">
+					AND mo.PAY_USER        = :payUser         
+				</#if>
+				<#if payStartTime?exists && payStartTime!=null && payStartTime!="">
+					AND mo.PAY_TIME        >= :payStartTime       
+				</#if>
+				<#if payEndTime?exists && payEndTime!=null && payEndTime!="">
+					AND mo.PAY_TIME        <= :payEndTime       
+				</#if>
+				<#if closeType?exists && closeType!=null && closeType!="">  
+					AND mo.CLOSE_TYPE      = :closeType       
+				</#if>
+				<#if closeReason?exists && closeReason!=null && closeReason!="">
+					AND mo.CLOSE_REASON    = :closeReason     
+				</#if>
+				<#if closeStartTime?exists && closeStartTime!=null && closeStartTime!="">
+					AND mo.CLOSE_TIME      >= :closeStartTime   
+				</#if>
+				<#if closeEndTime?exists && closeEndTime!=null && closeEndTime!="">
+					AND mo.CLOSE_TIME      <= :closeEndTime   
+				</#if>
+				<#if updateStartTime?exists && updateStartTime!=null && updateStartTime!="">    
+					AND mo.UPDATE_TIME     >= :updateStartTime      
+				</#if>
+				<#if updateEndTime?exists && updateEndTime!=null && updateEndTime!="">    
+					AND mo.UPDATE_TIME     <= :updateEndTime      
+				</#if>
+				<#if createStartTime?exists && createStartTime!=null && createStartTime!="">
+					AND mo.CREATE_TIME     >= :createStartTime     
+				</#if>
+				<#if createEndTime?exists && createEndTime!=null && createEndTime!="">
+					AND mo.CREATE_TIME     <= :createEndTime     
+				</#if>
+				ORDER BY mo.CREATE_TIME DESC  
+		]]>
+	</sql>
+	
+	<!-- 更改订单状态 -->
+    <sql id="chgOrderStatus">
+    	<![CDATA[
+    	    UPDATE oms_oms.main_order SET
+			STATUS        = :status,
+			UPDATE_TIME   = :updateTime
+			WHERE MAIN_ORDER_ID = :morderId
+		]]>
+    </sql>
+</sqlMap>

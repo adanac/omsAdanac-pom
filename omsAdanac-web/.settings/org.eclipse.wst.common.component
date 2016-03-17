@@ -11,6 +11,15 @@
         <dependent-module archiveName="omsAdanac-intf-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/omsAdanac-intf/omsAdanac-intf">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="adanac-framework-common-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/adanac-framework-common/adanac-framework-common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="adanac-zk-client-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/adanac-zk-client/adanac-zk-client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="adanac-uniconfig-client-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/adanac-uniconfig-client/adanac-uniconfig-client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="omsAdanac-web"/>
         <property name="java-output-path" value="/omsAdanac-web/target/classes"/>
     </wb-module>
