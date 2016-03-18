@@ -268,4 +268,12 @@ public class InvoiceReqDto implements Serializable {
 		this.updateTime = updateTime;
 	}
 
+	@Override
+	public String toString() {
+		return "InvoiceReqDto [id=" + id + ", orderId=" + orderId + ", companyName=" + companyName + ", taxNum="
+				+ taxNum + ", companyBank=" + companyBank + ", bankAccount=" + bankAccount + ", companyAddress="
+				+ companyAddress + ", companyTelephone=" + companyTelephone + ", invoiceType=" + invoiceType
+				+ ", createTime=" + createTime + ", updateTime=" + updateTime + ", lastOperator=" + lastOperator + "]";
+	}
+
 }

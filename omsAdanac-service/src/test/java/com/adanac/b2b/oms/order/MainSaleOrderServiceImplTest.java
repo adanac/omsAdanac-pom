@@ -33,7 +33,11 @@ import com.adanac.b2b.oms.utils.uuid.DefaultSequenceGenerator;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:conf/spring/spring-impl-test.xml",
 		"classpath:conf/spring/spring-res-test.xml", "classpath:conf/spring/spring-dubbo.xml" })
-@TransactionConfiguration(defaultRollback = false)
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true) // 这里的事务关联到配置文件中的事务控制器（transactionManager
+																								// =
+																								// "transactionManager"），同时指定自动回滚（defaultRollback
+																								// =
+																								// true）。这样做操作的数据才不会污染数据库
 public class MainSaleOrderServiceImplTest {
 
 	@Autowired

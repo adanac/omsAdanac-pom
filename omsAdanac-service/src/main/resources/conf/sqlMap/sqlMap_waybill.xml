@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="waybill">
+	<sql id="createWaybill">
+    	<![CDATA[
+    	    insert oms_dms.ORDER_DELIVERY_INFO(
+    	    ID				   ,
+    	    SALE_ORDER_ID           ,
+			LGS_COMPANY_CODE   ,
+			LGS_COMPANY_NAME   ,
+			LGS_FREIGHT        ,
+			LGS_NICKNAME       ,
+			LGS_PHONE          ,
+			LGS_ADDR           ,
+			WAYBILL_CODE       ,
+			CREATE_TIME        ,
+			UPDATE_TIME        ,
+			LAST_OPERATOR        
+			) VALUES(
+			:id				 ,
+			:orderId	     ,
+			:companyCode     ,
+			:companyName     ,
+			:freightMoney    ,
+			:nickName        ,
+			:phone           ,
+			:lgsAddr         ,
+			:waybillCode     ,
+			:createTime      ,
+			:updateTime      ,
+			:lastOperator
+			)        
+		]]>
+    </sql>    
+     
+    <sql id="updateWaybill">
+    	<![CDATA[
+    	    UPDATE oms_dms.ORDER_DELIVERY_INFO set
+			<#if companyCode?exists && companyCode!=null && companyCode!="">
+			LGS_COMPANY_CODE   = :companyCode,
+			</#if>
+			<#if companyName?exists && companyName!=null && companyName!="">
+			LGS_COMPANY_NAME   = :companyName,
+			</#if>
+			<#if freightMoney?exists && freightMoney!=null && freightMoney!="">
+			LGS_FREIGHT        = :freightMoney,
+			</#if>
+			<#if nickName?exists && nickName!=null && nickName!="">
+			LGS_NICKNAME       = :nickName,
+			</#if>
+			<#if phone?exists && phone!=null && phone!="">
+			LGS_PHONE          = :phone,
+			</#if>
+			<#if lgsAddr?exists && lgsAddr!=null && lgsAddr!="">
+			LGS_ADDR           = :lgsAddr,
+			</#if>
+			<#if waybillCode?exists && waybillCode!=null && waybillCode!="">
+			WAYBILL_CODE       = :waybillCode,
+			</#if>
+			<#if updateTime?exists && updateTime!=null && updateTime!="">
+			UPDATE_TIME        = :updateTime,
+			</#if>
+			<#if lastOperator?exists && lastOperator!=null && lastOperator!="">
+			LAST_OPERATOR      = :lastOperator,
+			</#if>
+			ID = :id
+			where ID = :id
+		]]>
+    </sql>
+	
+	<sql id="findWaybillList">
+    	<![CDATA[
+    	    SELECT
+    	    ID                 as id,
+    	    SALE_ORDER_ID           as orderId,
+			LGS_COMPANY_CODE   as companyCode,
+			LGS_COMPANY_NAME   as companyName,
+			LGS_FREIGHT        as freightMoney,
+			LGS_NICKNAME       as nickName,
+			LGS_PHONE          as phone,
+			LGS_ADDR           as lgsAddr,
+			WAYBILL_CODE       as waybillCode,
+			CREATE_TIME        as createTime,
+			UPDATE_TIME        as updateTime,
+			LAST_OPERATOR      as lastOperator
+			FROM oms_dms.ORDER_DELIVERY_INFO
+			WHERE
+			SALE_ORDER_ID = :orderId
+		]]>
+    </sql>
+        
+    <sql id="deleteWaybills">
+    	<![CDATA[
+    	    delete
+			from oms_dms.ORDER_DELIVERY_INFO
+			where ID in(${deliveryIds})
+		]]>
+    </sql>
+    
+</sqlMap>

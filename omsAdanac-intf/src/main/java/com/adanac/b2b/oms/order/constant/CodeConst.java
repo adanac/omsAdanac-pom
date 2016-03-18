@@ -275,8 +275,6 @@ public final class CodeConst {
 
 	/**
 	 * 支付者类型
-	 * @author Administrator
-	 *
 	 */
 	public final class PayerType {
 		/**
@@ -295,8 +293,6 @@ public final class CodeConst {
 
 	/**
 	 * 主订单状态
-	 * @author Administrator
-	 *
 	 */
 	public final class MainOrderStatus {
 		/**

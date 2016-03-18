@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="order_invoice">
+	<sql id="createInvoice">
+    	<![CDATA[
+    	    insert ORDER_INVOICE(
+    	    ID               ,
+    	    SALE_ORDER_ID     ,
+			INVOICE_CODE     ,
+			INVOICE_NUMBER   ,
+			BILLING_DATE     ,
+			INVOICE_MONEY    ,
+			COMPANY_NAME     ,
+			TAX_NUM          ,
+			COMPANY_BANK     ,
+			BANK_ACCOUNT     ,
+			COMPANY_ADDRESS  ,
+			COMPANY_TELEPHONE,
+			INVOICE_TYPE     ,
+			CREATE_TIME      ,
+			UPDATE_TIME      ,
+			LAST_OPERATOR
+			) VALUES(
+			:id				 ,
+			:orderId		 ,   
+			:invoiceCode     ,
+			:invoiceNumber   ,
+			:billingDate     ,
+			:invoiceMoney    ,
+			:companyName     ,
+			:taxNum          ,
+			:companyBank     ,
+			:bankAccount     ,
+			:companyAddress  ,
+			:companyTelephone,
+			:invoiceType     ,
+			:createTime      ,
+			:updateTime      ,
+			:lastOperator
+			)        
+		]]>
+    </sql>
+    
+    <sql id="findInvoiceById">
+    	<![CDATA[
+    	    select
+    	    ID                as id				 ,
+    	    SALE_ORDER_ID      as orderId		 ,
+			INVOICE_CODE      as invoiceCode     ,
+			INVOICE_NUMBER    as invoiceNumber   ,
+			BILLING_DATE      as billingDate     ,
+			INVOICE_MONEY     as invoiceMoney    ,
+			COMPANY_NAME      as companyName     ,
+			TAX_NUM           as taxNum          ,
+			COMPANY_BANK      as companyBank     ,
+			BANK_ACCOUNT      as bankAccount     ,
+			COMPANY_ADDRESS   as companyAddress  ,
+			COMPANY_TELEPHONE as companyTelephone,
+			INVOICE_TYPE      as invoiceType     ,
+			CREATE_TIME       as createTime      ,
+			UPDATE_TIME       as updateTime       	
+			from ORDER_INVOICE
+			where ID = :invoiceId
+		]]>
+    </sql>
+    
+    <sql id="listByOrderId">
+    	<![CDATA[
+    	    select
+    	    ID                as id				 ,
+    	    SALE_ORDER_ID      as orderId		 ,
+			INVOICE_CODE      as invoiceCode     ,
+			INVOICE_NUMBER    as invoiceNumber   ,
+			BILLING_DATE      as billingDate     ,
+			INVOICE_MONEY     as invoiceMoney    ,
+			COMPANY_NAME      as companyName     ,
+			TAX_NUM           as taxNum          ,
+			COMPANY_BANK      as companyBank     ,
+			BANK_ACCOUNT      as bankAccount     ,
+			COMPANY_ADDRESS   as companyAddress  ,
+			COMPANY_TELEPHONE as companyTelephone,
+			INVOICE_TYPE      as invoiceType     ,
+			CREATE_TIME       as createTime      ,
+			UPDATE_TIME       as updateTime       	
+			from ORDER_INVOICE
+			where SALE_ORDER_ID = :orderId
+		]]>
+    </sql>
+    
+    <sql id="updateInvoice">
+    	<![CDATA[
+    	    UPDATE ORDER_INVOICE set
+			<#if invoiceCode?exists && invoiceCode!=null && invoiceCode!="">
+			INVOICE_CODE   = :invoiceCode,
+			</#if>
+			<#if invoiceNumber?exists && invoiceNumber!=null && invoiceNumber!="">
+			INVOICE_NUMBER   = :invoiceNumber,
+			</#if>
+			<#if billingDate?exists && billingDate!=null && billingDate!="">
+			BILLING_DATE   = :billingDate,
+			</#if>
+			<#if invoiceMoney?exists && invoiceMoney!=null && invoiceMoney!="">
+			INVOICE_MONEY        = :invoiceMoney,
+			</#if>
+			<#if updateTime?exists && updateTime!=null && updateTime!="">
+			UPDATE_TIME        = :updateTime,
+			</#if>
+			<#if lastOperator?exists && lastOperator!=null && lastOperator!="">
+			LAST_OPERATOR      = :lastOperator,
+			</#if>
+			ID = :id
+			where ID = :id
+		]]>
+    </sql>
+    
+    <sql id="deleteInvoice">
+    	<![CDATA[
+    	    delete
+			from ORDER_INVOICE
+			where ID in(${invoiceIds})
+		]]>
+    </sql>
+    
+</sqlMap>

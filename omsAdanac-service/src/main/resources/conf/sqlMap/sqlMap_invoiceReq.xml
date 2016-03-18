@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="invoice_requirement">
+	<sql id="createInvoiceReq">
+    	<![CDATA[
+    	    insert INVOICE_REQUIREMENT(
+    	    ID                ,
+			SALE_ORDER_ID      ,
+			COMPANY_NAME      ,
+			TAX_NUM           ,
+			COMPANY_BANK      ,
+			BANK_ACCOUNT      ,
+			COMPANY_ADDRESS   ,
+			COMPANY_TELEPHONE ,
+			INVOICE_TYPE      ,
+			CREATE_TIME       ,
+			UPDATE_TIME       ,
+			LAST_OPERATOR
+			) VALUES(
+			:id				 ,
+			:orderId		 , 
+			:companyName     ,
+			:taxNum    		 ,
+			:companyBank     ,
+			:bankAccount     ,
+			:companyAddress  ,
+			:companyTelephone,
+			:invoiceType     ,
+			:createTime      ,
+			:updateTime      ,
+			:lastOperator
+			)        
+		]]>
+    </sql>
+    
+    <sql id="findByOrderId">
+    	<![CDATA[
+    	    select
+    	    ID                 as id				,
+			SALE_ORDER_ID       as orderId			,
+			COMPANY_NAME       as companyName       ,
+			TAX_NUM            as taxNum    		,
+			COMPANY_BANK       as companyBank       ,
+			BANK_ACCOUNT       as bankAccount       ,
+			COMPANY_ADDRESS    as companyAddress    ,
+			COMPANY_TELEPHONE  as companyTelephone  ,
+			INVOICE_TYPE       as invoiceType       ,
+			CREATE_TIME        as createTime        ,
+			UPDATE_TIME        as updateTime       
+			from INVOICE_REQUIREMENT
+			where SALE_ORDER_ID = :orderId
+		]]>
+    </sql>
+    
+</sqlMap>

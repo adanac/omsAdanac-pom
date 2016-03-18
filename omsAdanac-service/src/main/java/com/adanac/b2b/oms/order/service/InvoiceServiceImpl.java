@@ -42,7 +42,14 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	public InvoiceDto findById(String invId) {
-		return null;
+		try {
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("invoiceId", invId);
+			return baseDao.queryForObject("order_invoice.findInvoiceById", paramMap, InvoiceDto.class);
+		} catch (Exception e) {
+			log.error("InvoiceServiceImpl-->findById-->invoiceId: " + invId + e);
+			throw new SysException("根据ID查询发票信息失败", e);
+		}
 	}
 
 	@Override

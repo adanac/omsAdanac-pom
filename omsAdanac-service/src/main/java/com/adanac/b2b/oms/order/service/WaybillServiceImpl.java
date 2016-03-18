@@ -41,7 +41,7 @@ public class WaybillServiceImpl implements WaybillService {
 			deliveryInfo.setCreateTime(DateUtils.format(new Date(), DateUtils.DEFAULT_YEAR_MONTH_DAY_HMS));
 			deliveryInfo.setUpdateTime(deliveryInfo.getCreateTime());
 			deliveryInfo.setId(id);
-			baseDao.execute("order_delivery_info.createDeliveryInfo", deliveryInfo);
+			baseDao.execute("waybill.createWaybill", deliveryInfo);
 			return id;
 		} catch (Exception e) {
 			log.error("WaybillServiceImpl-->createWaybill: " + deliveryInfo + e);
@@ -54,7 +54,7 @@ public class WaybillServiceImpl implements WaybillService {
 		Map<String, Object> temp = new HashMap<String, Object>();
 		try {
 			temp.put("orderId", orderId);
-			return baseDao.queryForList("order_delivery_info.findDeliveryInfoList", temp, WaybillDto.class);
+			return baseDao.queryForList("waybill.findWaybillList", temp, WaybillDto.class);
 		} catch (Exception e) {
 			log.error("WaybillServiceImpl-->findWaybillList: " + temp + e);
 			throw new SysException("查询运单信息失败", e);
@@ -64,7 +64,7 @@ public class WaybillServiceImpl implements WaybillService {
 	@Override
 	public Boolean updateWaybill(WaybillDto deliveryInfo) {
 		try {
-			int rst = baseDao.execute("order_delivery_info.updateDeliveryInfo", deliveryInfo);
+			int rst = baseDao.execute("waybill.updateWaybill", deliveryInfo);
 			return rst > 0;
 		} catch (Exception e) {
 			log.error("WaybillServiceImpl-->updateWaybill: " + deliveryInfo + e);
@@ -78,7 +78,7 @@ public class WaybillServiceImpl implements WaybillService {
 		try {
 			String deliveryIds = CommonUtil.ListToString(ids);
 			temp.put("deliveryIds", deliveryIds);
-			int rst = baseDao.execute("order_delivery_info.deleteDeliveryInfos", temp);
+			int rst = baseDao.execute("waybill.deleteWaybills", temp);
 			return rst > 0;
 		} catch (Exception e) {
 			log.error("WaybillServiceImpl-->deleteWaybills-->入参: " + ids + e);

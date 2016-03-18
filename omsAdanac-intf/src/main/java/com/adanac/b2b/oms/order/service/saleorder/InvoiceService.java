@@ -15,7 +15,7 @@ public interface InvoiceService {
 	/**
 	 * 增加订单的发票,支持增加单张或多张
 	 * @param invInfo 需要增加的发票信息
-	 * @return 成功返回true,失败返回false
+	 * @return 主键
 	 */
 	public String addInvoice(InvoiceDto invInfo);
 
@@ -23,10 +23,10 @@ public interface InvoiceService {
 
 	/**
 	 * 根据发票ID查询发票信息
-	 * @param invId 发票的ID
+	 * @param invoiceId 发票的ID
 	 * @return 发票信息
 	 */
-	public InvoiceDto findById(String invId);
+	public InvoiceDto findById(String invoiceId);
 
 	/**
 	 * 根据订单ID查询该订单下的所有发票信息

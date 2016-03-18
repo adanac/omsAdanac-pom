@@ -321,4 +321,14 @@ public class InvoiceDto implements Serializable {
 		this.invoiceMoney = invoiceMoney;
 	}
 
+	@Override
+	public String toString() {
+		return "InvoiceDto [id=" + id + ", orderId=" + orderId + ", invoiceCode=" + invoiceCode + ", invoiceNumber="
+				+ invoiceNumber + ", billingDate=" + billingDate + ", invoiceMoney=" + invoiceMoney + ", companyName="
+				+ companyName + ", taxNum=" + taxNum + ", companyBank=" + companyBank + ", bankAccount=" + bankAccount
+				+ ", companyAddress=" + companyAddress + ", companyTelephone=" + companyTelephone + ", invoiceType="
+				+ invoiceType + ", createTime=" + createTime + ", updateTime=" + updateTime + ", lastOperator="
+				+ lastOperator + "]";
+	}
+
 }

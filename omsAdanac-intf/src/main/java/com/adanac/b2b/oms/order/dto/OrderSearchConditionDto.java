@@ -12,27 +12,27 @@ public class OrderSearchConditionDto implements Serializable {
 	 * 订单ID
 	 */
 	private String orderId;
-	
+
 	/**
 	 * 售后申请ID
 	 */
 	private String aftersaleApplyID;
-	
+
 	/**
 	 * 原始订单ID
 	 */
 	private String orgOrderId;
-	
+
 	/**
 	 * 客户ID(商家的用户ID)
 	 */
-	private String userId;    
-	
+	private String userId;
+
 	/**
 	 * 商家ID
 	 */
-	private String merchantId; 
-	
+	private String merchantId;
+
 	/**
 	 * 供应商ID
 	 */
@@ -41,35 +41,35 @@ public class OrderSearchConditionDto implements Serializable {
 	/**
 	 * 订单种类: 暂时无用（如：团购订单等）
 	 */
-	private String category;  
+	private String category;
 
 	/**
-	 * 订单类型: ZOR：正向订单、ZRE：售后订单
+	 * 订单类型: 0：正向订单、1：售后订单
 	 * 以逗号分隔：1,2,3
 	 */
-	private String type;  
-	
+	private String type;
+
 	/**
 	 * 订单状态:0：待支付1：待发货2：待收货3：已完成4：已评价5：已取消 6：售后待收货7：售后已收货8：售后已退款9：售后完成
 	 * 以逗号分隔：1,2,3,4
 	 */
-	private String status;      
+	private String status;
 
 	/**
 	 * 售后订单状态:
 	 */
-	private Integer aftersaleStatus;  
+	private Integer aftersaleStatus;
 
 	/**
 	 * 订单来源渠道: 0手机;1PAD
 	 */
-	private Integer channel; 
+	private Integer channel;
 
 	/**
 	 * 订单生成开始时间
 	 */
 	private String startTime;
-	
+
 	/**
 	 * 订单生成结束时间
 	 */
@@ -78,13 +78,13 @@ public class OrderSearchConditionDto implements Serializable {
 	/**
 	 * 订单关闭原因: 1自己关闭; 0系统关闭
 	 */
-	private Integer closeType; 
+	private Integer closeType;
 
 	/**
 	 * 订单关闭开始时间
 	 */
-	private String startCloseTime;   
-	
+	private String startCloseTime;
+
 	/**
 	 * 订单关闭结束时间
 	 */
@@ -93,43 +93,43 @@ public class OrderSearchConditionDto implements Serializable {
 	/**
 	 * 是否有发标识: 0无发票;1有发票
 	 */
-	private Integer isReceipt; 
-	
+	private Integer isReceipt;
+
 	/**
 	 * 订单编码:年+月+日+供应商编码+三位流水
 	 */
 	private String orderCode;
-	
+
 	/**
 	 * 申请单类型
 	 */
 	private Integer asType;
-	
+
 	/**
 	 * 申请状态
 	 */
 	private Integer asStatus;
-	
+
 	/**
 	 * 申请状态取非值 
 	 */
 	private Integer asStatusNot;
-	
+
 	/**
 	 * 申请状态为是否为NULL:　1:　NULL;0:　NOT NULL
 	 */
-	private Integer asStatusNull;	
+	private Integer asStatusNull;
 
 	/**
 	 * 商品名称
 	 */
 	private String productName;
-	
+
 	/**
 	 * 支付开始时间
 	 */
 	private String payStartTime;
-	
+
 	/**
 	 * 支付结束时间
 	 */
@@ -138,7 +138,7 @@ public class OrderSearchConditionDto implements Serializable {
 	 * 发货开始时间
 	 */
 	private String deliveryStartTime;
-	
+
 	/**
 	 * 发货结束时间
 	 */
@@ -147,17 +147,17 @@ public class OrderSearchConditionDto implements Serializable {
 	 * 主订单ID
 	 */
 	private String morderId;
-	
+
 	/**
 	 * 主订单编码
 	 */
 	private String morderCode;
-	
+
 	/**
 	 * 支付方式: 1支付宝,2微信.....
 	 */
 	private Integer payBank;
-	
+
 	/**
 	 * 订单评价状态标识:0未评价;1已评价(订单中所有订单项都评价才算已评价)
 	 */
@@ -260,7 +260,6 @@ public class OrderSearchConditionDto implements Serializable {
 		this.orderCode = orderCode;
 	}
 
-	
 	/**
 	 * 获取订单ID
 	 * @return 订单ID
@@ -268,7 +267,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public String getOrderId() {
 		return orderId;
 	}
-	
+
 	/**
 	 * 设置订单ID
 	 * @param orderId 订单ID
@@ -277,7 +276,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
-	
+
 	/**
 	 * 获取售后申请ID
 	 * @return 返回售后申请ID
@@ -285,7 +284,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public String getAftersaleApplyID() {
 		return aftersaleApplyID;
 	}
-	
+
 	/**
 	 * 设置售后申请ID
 	 * @param aftersaleApplyID 售后申请ID
@@ -294,7 +293,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public void setAftersaleApplyID(String aftersaleApplyID) {
 		this.aftersaleApplyID = aftersaleApplyID;
 	}
-	
+
 	/**
 	 * 获取原始订单ID
 	 * @return 返回原始订单ID
@@ -302,7 +301,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public String getOrgOrderId() {
 		return orgOrderId;
 	}
-	
+
 	/**
 	 * 设置原始订单ID
 	 * @param orgOrderId 原始订单ID
@@ -311,7 +310,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public void setOrgOrderId(String orgOrderId) {
 		this.orgOrderId = orgOrderId;
 	}
-	
+
 	/**
 	 * 获取客户ID
 	 * @return 返回客户ID
@@ -319,7 +318,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public String getUserId() {
 		return userId;
 	}
-	
+
 	/**
 	 * 设置客户ID
 	 * @param userId 客户ID
@@ -328,7 +327,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	
+
 	/**
 	 * 获取商家ID
 	 * @return 商家ID
@@ -336,7 +335,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public String getMerchantId() {
 		return merchantId;
 	}
-	
+
 	/**
 	 * 设置商家ID
 	 * @param merchantId 商家ID
@@ -345,7 +344,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public void setMerchantId(String merchantId) {
 		this.merchantId = merchantId;
 	}
-	
+
 	/**
 	 * 获取供应商ID
 	 * @return 供应商ID
@@ -353,7 +352,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public String getSupplierId() {
 		return supplierId;
 	}
-	
+
 	/**
 	 * 设置供应商ID
 	 * @param supplierId 供应商ID
@@ -362,7 +361,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public void setSupplierId(String supplierId) {
 		this.supplierId = supplierId;
 	}
-	
+
 	/**
 	 * 获取订单种类
 	 * @return 订单种类: 暂时无用（如：团购订单等）
@@ -370,7 +369,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public String getCategory() {
 		return category;
 	}
-	
+
 	/**
 	 * 设置订单种类
 	 * @param category 订单种类: 暂时无用（如：团购订单等）
@@ -379,7 +378,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
+
 	/**
 	 * 获取订单类型
 	 * @return 订单类型: ZOR：正向订单、ZRE：售后订单
@@ -387,7 +386,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public String getType() {
 		return type;
 	}
-	
+
 	/**
 	 * 设置订单类型
 	 * @param type 订单类型: ZOR：正向订单、ZRE：售后订单
@@ -396,7 +395,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 	/**
 	 * 获取订单状态
 	 * @return 订单状态: 0：待支付1：待发货2：待收货3：已完成4：已评价5：已取消 6：售后待收货7：售后已收货8：售后已退款9：售后完成
@@ -404,7 +403,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public String getStatus() {
 		return status;
 	}
-	
+
 	/**
 	 * 设置订单状态
 	 * @param status 订单状态: 0：待支付1：待发货2：待收货3：已完成4：已评价5：已取消 6：售后待收货7：售后已收货8：售后已退款9：售后完成
@@ -413,7 +412,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	/**
 	 * 获取售后订单状态
 	 * @return 售后订单状态
@@ -421,7 +420,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public Integer getAftersaleStatus() {
 		return aftersaleStatus;
 	}
-	
+
 	/**
 	 * 设置售后订单状态
 	 * @param aftersaleStatus 售后订单状态
@@ -430,7 +429,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public void setAftersaleStatus(Integer aftersaleStatus) {
 		this.aftersaleStatus = aftersaleStatus;
 	}
-	
+
 	/**
 	 * 获取订单渠道
 	 * @return 订单渠道  0：手机、1：pad
@@ -438,7 +437,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public Integer getChannel() {
 		return channel;
 	}
-	
+
 	/**
 	 * 设置订单渠道
 	 * @param channel 订单渠道 0：手机、1：pad
@@ -455,7 +454,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public Integer getCloseType() {
 		return closeType;
 	}
-	
+
 	/**
 	 * 设置订单关闭类型
 	 * @param closeType 订单关闭类型: 1自己关闭;0系统关闭
@@ -472,7 +471,7 @@ public class OrderSearchConditionDto implements Serializable {
 	public Integer getIsReceipt() {
 		return isReceipt;
 	}
-	
+
 	/**
 	 * 设置是否有发票标识
 	 * @param isReceipt 是否有发票标识:1有发票;0无发票
@@ -573,5 +572,5 @@ public class OrderSearchConditionDto implements Serializable {
 	public void setDeliveryEndTime(String deliveryEndTime) {
 		this.deliveryEndTime = deliveryEndTime;
 	}
-	
+
 }

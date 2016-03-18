@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="delivery_trace">
+	<sql id="createDeliveryTrace">
+    	<![CDATA[
+    	    insert oms_dms.DELIVERY_TRACE(
+    	    ID                 ,
+			SALE_ORDER_ID      ,
+			LGS_DELIVERY_TIME  ,
+			DELIVERY_INF_ID    ,
+			LGS_REMARK         ,
+			LGS_STATUS         ,
+			LOCATION           ,
+			RECIEVER           ,
+			LINK_PHONE         ,
+			CREATE_TIME        ,
+			UPDATE_TIME        ,
+			LAST_OPERATOR
+			) VALUES(
+			:id				 ,
+			:orderId		 ,
+			:deliveryTime    ,
+			:deliveryInfoId  ,
+			:deliveryRemark  ,
+			:logStatus       ,
+			:location        ,
+			:reciever        ,
+			:linkPhone       ,
+			:createTime      ,
+			:updateTime      ,
+			:lastOperator
+			)        
+		]]>
+    </sql>
+    
+    <sql id="listByOrderyId">
+    	<![CDATA[
+    	    select
+    	    ID                 as id		      , 
+			SALE_ORDER_ID      as orderId	      , 
+			LGS_DELIVERY_TIME  as deliveryTime    ,
+			DELIVERY_INF_ID    as deliveryInfoId  ,
+			LGS_REMARK         as deliveryRemark  ,
+			LGS_STATUS         as logStatus       ,
+			LOCATION           as location        ,
+			RECIEVER           as reciever        ,
+			LINK_PHONE         as linkPhone       ,       
+			CREATE_TIME        as createTime      ,
+			UPDATE_TIME        as updateTime      ,
+			LAST_OPERATOR      as lastOperator    ,
+			CREATE_TIME        as createTime      ,
+			UPDATE_TIME        as updateTime      ,
+			LAST_OPERATOR      as lastOperator    
+			from oms_dms.DELIVERY_TRACE
+			where SALE_ORDER_ID = :orderId
+		]]>
+    </sql>
+    
+</sqlMap>
